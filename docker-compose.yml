@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  postgis: 
+    build: 
+      context: ./postgis 
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=7311
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    networks:
+      - geo
+    volumes:
+      - ./postgis/data:/var/lib/postgresql/data
+
+  geoserver:
+    ports:
+      - 8080:8080
+    build:
+      context: ./geoserver
+      args:
+        - CORS_ENABLED=true
+        - CORS_ALLOWED_METHODS=GET,POST,PUT,HEAD,OPTIONS
+    environment:
+      - INSTALL_EXTENSIONS=true
+      - STABLE_EXTENSIONS="gdal,oracle,geopkg-output,excel"
+    volumes:
+      - ./geoserver/geoserver_data:/opt/geoserver_data/:Z
+      - ./geoserver/additional_libs:/opt/additional_libs:Z
+    networks:
+      - geo
+
+  django:
+    build: ./django
+    volumes:
+      - ./django:/code
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_NAME=django
+      - POSTGRES_USER=django
+      - POSTGRES_PASSWORD=7311
+    networks:
+      - geo
+    depends_on:
+      - postgis
+
+networks:
+  geo:
+    driver: bridge

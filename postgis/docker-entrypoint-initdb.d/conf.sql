@@ -1,0 +1,15 @@
+ALTER SYSTEM SET maintenance_work_mem = '1500MB';
+ALTER SYSTEM SET work_mem = '30MB';
+ALTER SYSTEM SET checkpoint_completion_target = 0.9;
+ALTER SYSTEM SET random_page_cost = 1.1;
+ALTER SYSTEM SET min_wal_size = '2GB';
+ALTER SYSTEM SET max_wal_size = '8GB';
+ALTER SYSTEM SET max_worker_processes = 4;
+ALTER SYSTEM SET max_parallel_workers = 4;
+ALTER SYSTEM SET log_temp_files = 0;
+ALTER SYSTEM SET autovacuum_analyze_scale_factor = 0.05;
+ALTER SYSTEM SET autovacuum_vacuum_scale_factor = 0.05;
+ALTER SYSTEM SET vacuum_cost_limit = 1000;
+ALTER SYSTEM SET log_line_prefix = '%t [%p]: db=%d,user=%u,app=%a,client=%h ';
+ALTER SYSTEM SET effective_cache_size = '2GB';
+ALTER SYSTEM SET shared_buffers = '2048MB';
